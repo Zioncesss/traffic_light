@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      margin: 100px auto;
+      background-color: rgba(255, 192, 203, 0.503);
+      width: 600px;
+      height: 400px;
+      position: relative;
+    }
+
+    .board {
+      width: 150px;
+      height: 30px;
+      background-color: gray;
+      border-radius: 7%;
+      border: 2px solid gray;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .light {
+      width: 20px;
+      height: 20px;
+      margin-top: 5px;
+      background-color: black;
+      border: 1px solid black;
+      border-radius: 50%;
+    }
+
+    .north {
+      position: absolute;
+      left: 225px;
+      top: 40px;
+    }
+
+    .south {
+      position: absolute;
+      left: 225px;
+      top: 330px;
+      transform: rotate(180deg);
+    }
+
+    .west {
+      position: absolute;
+      transform: rotate(-90deg);
+      top: 183px
+    }
+
+    .east {
+      position: absolute;
+      transform: rotate(90deg);
+      top: 183px;
+      left: 450px
+    }
+
+    .green {
+      background-color: green;
+    }
+
+    .yellow {
+      background-color: yellow;
+    }
+
+    .red {
+      background-color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <button class="btn">开关</button>
+    <div class="north board">
+      <div class="light "></div>
+      <div class="light "></div>
+      <div class="light"></div>
+    </div>
+    <div class="south board">
+      <div class="light"></div>
+      <div class="light "></div>
+      <div class="light"></div>
+    </div>
+    <div class="west board">
+      <div class="light "></div>
+      <div class="light "></div>
+      <div class="light "></div>
+    </div>
+    <div class="east board">
+      <div class="light "></div>
+      <div class="light "></div>
+      <div class="light "></div>
+    </div>
+  </div>
+  <script>
+    const btn = document.querySelector('.btn')
+    let flag = 0
+    function traffic_light() {
+      if (flag) {
+        const n_s_loop = new Promise(resolve => {
+          const n_green = document.querySelector('.north').children[0]
+          const s_green = document.querySelector('.south').children[0]
+          n_green.classList.add('green')
+          s_green.classList.add('green')
+          setTimeout(() => {
+            n_green.classList.remove('green')
+            s_green.classList.remove('green')
+            resolve()
+          }, 2000)
+        }).then(() => {
+          return new Promise(resolve => {
+            const n_yellow = document.querySelector('.north').children[1]
+            const s_yellow = document.querySelector('.south').children[1]
+            n_yellow.classList.add('yellow')
+            s_yellow.classList.add('yellow')
+            setTimeout(() => {
+              n_yellow.classList.remove('yellow')
+              s_yellow.classList.remove('yellow')
+              resolve()
+            }, 2000)
+          })
+        }).then(() => {
+          return new Promise(resolve => {
+            const n_red = document.querySelector('.north').children[2]
+            const s_red = document.querySelector('.south').children[2]
+            n_red.classList.add('red')
+            s_red.classList.add('red')
+            setTimeout(() => {
+              n_red.classList.remove('red')
+              s_red.classList.remove('red')
+              resolve()
+            }, 6000)
+          })
+        }).then(() => traffic_light())
+      }
+    }
+    btn.addEventListener('click', function () {
+      flag = !flag
+      traffic_light()
+    })
+  </script>
+</body>
+
+</html>
