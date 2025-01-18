@@ -105,43 +105,34 @@
       traffic_light1()
     })
     async function traffic_light1() {
-      const n_s_loop_0 = await new Promise(resolve => {
-        const n_green = document.querySelector('.north').children[0]
-        const s_green = document.querySelector('.south').children[0]
-        n_green.classList.add('green')
-        s_green.classList.add('green')
-        setTimeout(() => {
-          n_green.classList.remove('green')
-          s_green.classList.remove('green')
-          resolve()
-        }, 2000)
-      })
-      console.log(1);
-      const n_s_loop_1 = await new Promise(resolve => {
-        const n_green = document.querySelector('.north').children[1]
-        const s_green = document.querySelector('.south').children[1]
-        n_green.classList.add('yellow')
-        s_green.classList.add('yellow')
-        setTimeout(() => {
-          n_green.classList.remove('yellow')
-          s_green.classList.remove('yellow')
-          resolve()
-        }, 2000)
-      })
-      const n_s_loop_2 = await new Promise(resolve => {
-        const n_green = document.querySelector('.north').children[2]
-        const s_green = document.querySelector('.south').children[2]
-        n_green.classList.add('red')
-        s_green.classList.add('red')
-        setTimeout(() => {
-          n_green.classList.remove('red')
-          s_green.classList.remove('red')
-          resolve()
-        }, 2000)
+      await Promise.all([
+        light_on('north', 'green', 2000),
+        light_on('south', 'green', 2000)
+      ]);
 
-      })
+      await Promise.all([
+        light_on('north', 'yellow', 2000),
+        light_on('south', 'yellow', 2000)
+      ]);
+
+      await Promise.all([
+        light_on('north', 'red', 2000),
+        light_on('south', 'red', 2000)
+      ]);
       traffic_light1()
     }
+    const light_num = {
+      green: 0,
+      yellow: 1,
+      red: 2
+    }
+    async function light_on(direction, color, time) {
+      const light = document.querySelector(`.${direction}`).children[light_num[color]]
+      light.classList.add(`${color}`)
+      await new Promise(resolve => { setTimeout(resolve, time) })
+      light.classList.remove(`${color}`)
+    }
+
   </script>
 </body>
 
